@@ -1,6 +1,6 @@
 # Habilitar el motor de reescritura
 RewriteEngine On
-RewriteBase /archivo_judicial/
+RewriteBase /
 
 # Excluir archivos AJAX y de prueba de la reescritura
 RewriteCond %{REQUEST_URI} obtener_ubicacion\.php [OR]

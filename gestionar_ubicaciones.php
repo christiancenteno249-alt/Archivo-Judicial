@@ -275,7 +275,7 @@ if ($modo === 'lote') {
     <title>Gestión de Ubicaciones - Archivo Judicial</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
@@ -287,7 +287,7 @@ if ($modo === 'lote') {
             --ubicacion-blue: #0056b3;
         }
         body {
-            background-image: url('BACKGROUND (1).png');
+            background-image: url('/background.png');
             background-size: cover;
             background-position: top center;
             background-repeat: no-repeat;

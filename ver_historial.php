@@ -54,7 +54,7 @@ $historial = $stmtHistorial->fetchAll();
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     
     <style>
         :root {
@@ -62,7 +62,7 @@ $historial = $stmtHistorial->fetchAll();
             --institucional-dark: #121858;
         }
         body {
-            background-image: url('BACKGROUND (1).png');
+            background-image: url('/background.png');
             background-size: cover;
             background-position: top center;
             background-repeat: no-repeat;

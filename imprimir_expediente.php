@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once "conexion.php";
 require_once "auth_check.php";
 
@@ -45,17 +45,21 @@ try {
             }
             body {
                 background: white !important;
+                margin: 0;
             }
             .print-container {
                 box-shadow: none !important;
                 border: 1px solid #000 !important;
             }
+            /* Forzar impresion de colores de fondo */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
             /* Ocultar encabezados y pies de pagina del navegador */
             @page {
                 margin: 0.5cm;
-            }
-            body {
-                margin: 0;
             }
             /* Ocultar URL y fecha en el pie de pagina */
             header, footer {
@@ -127,8 +131,15 @@ try {
 <body>
 
 <div class="print-container">
+    <!-- Logos Institucionales -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <img src="/assets/img/dar_logo.jpeg" alt="DAR" style="height: 80px;">
+        <img src="/assets/img/tsj_logo.jpeg" alt="TSJ" style="height: 80px;">
+        <img src="/assets/img/dem_logo.jpeg" alt="DEM" style="height: 80px;">
+    </div>
+    
     <!-- Titulo del Documento -->
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
         <h4 class="fw-bold text-uppercase">Comprobante de Expediente</h4>
     </div>
     
@@ -218,7 +229,7 @@ try {
 </a>
 
 <!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="assets/css/bootstrap-icons.css">
 
 <script>
 // Auto-abrir dialogo de impresion al cargar (opcional)

@@ -5,9 +5,9 @@
  */
 
 $host = 'localhost';
-$dbname = 'db_archivo_judicial_test';
-$username = 'root';
-$password = ''; // Por defecto en XAMPP suele estar vacio
+$dbname = 'archivo_judicial';
+$username = 'chris';
+$password = '04022002'; // Por defecto en XAMPP suele estar vacio
 
 try {
     // Definimos el Data Source Name (DSN) con el charset para asegurar el correcto manejo de caracteres

@@ -166,7 +166,7 @@ try {
     <title>Gestión de Sedes</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     
     <style>
         :root {
@@ -174,7 +174,7 @@ try {
             --sede-blue: #0056b3;
         }
         body {
-            background-image: url('BACKGROUND (1).png');
+            background-image: url('/background.png');
             background-size: cover;
             background-position: top center;
             background-repeat: no-repeat;

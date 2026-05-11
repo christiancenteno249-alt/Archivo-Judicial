@@ -163,7 +163,7 @@ if ($busqueda_ejecutada) {
         $sqlCount = "SELECT COUNT(DISTINCT m.Id) as total" . $sqlBase;
         
         // SELECT: Trae datos de expedientes
-        $sql = "SELECT m.*, t.tribunal, s.nombre_sede" . $sqlBase;
+        $sql = "SELECT m.*, ANY_VALUE(t.tribunal) AS tribunal, ANY_VALUE(s.nombre_sede) AS nombre_sede" . $sqlBase;
         
         $condiciones = [];
         $parametros = [];
@@ -288,7 +288,7 @@ function renderPaginationPostButton($page, $label, $isDisabled = false, $isActiv
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-icons.css">
     
     <style>
         :root {
@@ -299,7 +299,7 @@ function renderPaginationPostButton($page, $label, $isDisabled = false, $isActiv
             --rojo-alerta: #DC3545;
         }
         body {
-            background-image: url('BACKGROUND (1).png');
+            background-image: url('/background.png');
             backdrop-filter: blur(1px);
             background-size: cover;
             background-position: center top;

@@ -661,7 +661,7 @@ ALTER TABLE `historial_movimientos`
 --
 ALTER TABLE `maestro`
   ADD PRIMARY KEY (`Id`),
-  ADD KEY `n_expediente` (`n_expediente`),
+  ADD UNIQUE KEY `n_expediente` (`n_expediente`),
   ADD KEY `idx_sede` (`id_sede`);
 
 --
