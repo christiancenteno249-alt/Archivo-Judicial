@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require_once "conexion.php";
 require_once "auditoria_functions.php";

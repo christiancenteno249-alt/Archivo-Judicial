@@ -1,62 +1,27 @@
-# Habilitar el motor de reescritura
+# ============================================================
+# .htaccess — Sistema Archivo Judicial
+# Arquitectura: MVC + Fallback Legacy (Patrón Estrangulador)
+# ============================================================
 RewriteEngine On
 RewriteBase /
 
-# Excluir archivos AJAX y de prueba de la reescritura
-RewriteCond %{REQUEST_URI} obtener_ubicacion\.php [OR]
-RewriteCond %{REQUEST_URI} verificar_expediente [OR]
-RewriteCond %{REQUEST_URI} test_
+
+# ─── 2. SERVIR ARCHIVOS FISICOS REALES (assets, imágenes, etc.) ──────────────
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule .* - [L]
 
-# Evitar que se procesen archivos reales
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# ─── 3. TODAS LAS URLS LIMPIAS → FRONT CONTROLLER MVC ────────────────────────
+# El index.php (Front Controller) recibe la petición, la despacha al
+# controlador MVC correspondiente y, si no existe, hace fallback al .php legacy.
+RewriteRule ^(.*)$ index.php [L,QSA]
 
-# Reglas de URLs limpias
-
-# Página principal
-RewriteRule ^inicio$ index.php [L]
-
-# Consulta de expedientes (buscador)
-RewriteRule ^consulta$ buscador.php [L,QSA]
-
-# Registro de nuevo expediente
-RewriteRule ^registro$ registrar.php [L]
-
-# Ver historial de expediente específico
-RewriteRule ^expediente/([0-9]+)$ ver_historial.php?id=$1 [L,QSA]
-
-# Editar expediente
-RewriteRule ^editar/([0-9]+)$ editar_registro.php?id=$1 [L]
-
-# Imprimir expediente
-RewriteRule ^imprimir/([0-9]+)$ imprimir_expediente.php?id=$1 [L]
-
-# Gestión de usuarios (solo admin)
-RewriteRule ^usuarios$ gestionar_usuarios.php [L]
-
-# Auditoría del sistema (solo admin)
-RewriteRule ^auditoria$ auditoria.php [L,QSA]
-
-# Respaldo de base de datos (solo admin)
-RewriteRule ^respaldo$ respaldar_bd.php [L]
-
-# Gestión de ubicaciones
-RewriteRule ^ubicaciones$ gestionar_ubicaciones.php [L,QSA]
-
-# Gestión de sedes (solo admin)
-RewriteRule ^sedes$ gestionar_sedes.php [L,QSA]
-
-# Cerrar sesión
-RewriteRule ^salir$ logout.php [L]
-
-# Proteger archivos sensibles
+# ─── SEGURIDAD ────────────────────────────────────────────────────────────────
 <FilesMatch "\.(md|sql|log)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Proteger archivos de configuración
 <Files "conexion.php">
     Order allow,deny
     Deny from all
@@ -72,17 +37,10 @@ RewriteRule ^salir$ logout.php [L]
     Deny from all
 </Files>
 
-# Prevenir listado de directorios
 Options -Indexes
 
-# Configuración de seguridad adicional
 <IfModule mod_headers.c>
-    # Prevenir clickjacking
     Header always set X-Frame-Options "SAMEORIGIN"
-    
-    # Prevenir MIME sniffing
     Header always set X-Content-Type-Options "nosniff"
-    
-    # Habilitar protección XSS en navegadores
     Header always set X-XSS-Protection "1; mode=block"
 </IfModule>
