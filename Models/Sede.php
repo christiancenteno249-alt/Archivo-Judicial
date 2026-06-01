@@ -11,10 +11,10 @@ class Sede {
         $this->db = $db;
     }
 
-    /** Obtiene todas las sedes ordenadas por activo y nombre. */
+    /** Obtiene todas las sedes ordenadas por activo y nombre (filtrando las eliminadas). */
     public function obtenerTodas(): array {
         $stmt = $this->db->query(
-            "SELECT * FROM sedes_deposito ORDER BY activo DESC, nombre_sede ASC"
+            "SELECT * FROM sedes_deposito WHERE eliminado = 0 ORDER BY activo DESC, nombre_sede ASC"
         );
         return $stmt->fetchAll();
     }
@@ -91,5 +91,13 @@ class Sede {
         );
         $stmt->execute([':estado' => $nuevoEstado, ':id' => $id]);
         return $nuevoEstado;
+    }
+
+    /** Borrado logico (eliminado = 1). */
+    public function eliminar(int $id): bool {
+        $stmt = $this->db->prepare(
+            "UPDATE sedes_deposito SET eliminado = 1 WHERE id_sede = :id"
+        );
+        return $stmt->execute([':id' => $id]);
     }
 }

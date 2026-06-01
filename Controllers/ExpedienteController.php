@@ -127,6 +127,7 @@ class ExpedienteController extends Controller {
         $this->requireAuth();
 
         $tribunales    = $this->model->obtenerTribunales();
+        $delitos       = $this->model->obtenerDelitos();
         $mensaje       = '';
         $tipoAlerta    = '';
         $datosImpresion = null;
@@ -150,6 +151,11 @@ class ExpedienteController extends Controller {
             }
 
             try {
+                // Registrar nuevo delito en el catálogo si es administrador
+                if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] === 'admin') {
+                    $this->model->asegurarDelitoExiste($datos['motivo_delito']);
+                }
+
                 $resultado = $this->model->guardar($datos, $_SESSION['usuario_id']);
                 $reg = $resultado['registro'];
 
@@ -185,7 +191,7 @@ class ExpedienteController extends Controller {
             }
         }
 
-        $this->render('expediente/registrar', compact('tribunales','mensaje','tipoAlerta','datosImpresion'));
+        $this->render('expediente/registrar', compact('tribunales','delitos','mensaje','tipoAlerta','datosImpresion'));
     }
 
     // ─── EDITAR ──────────────────────────────────────────────────────────────
@@ -204,6 +210,7 @@ class ExpedienteController extends Controller {
         }
 
         $tribunales = $this->model->obtenerTribunales();
+        $delitos    = $this->model->obtenerDelitos();
         $mensaje    = '';
         $tipoAlerta = '';
 
@@ -218,10 +225,15 @@ class ExpedienteController extends Controller {
                 $tipoAlerta = 'warning';
             } elseif ($datos['n_expediente'] !== $registro['n_expediente'] &&
                       $this->model->existeExpedienteOtroId($datos['n_expediente'], $id)) {
-                $mensaje    = "El número de expediente '{$datos['n_expediente']}' ya existe en otro registro.";
+                $mensaje    = "El número de expediente '{$datos['n_expediente']}' ya existe in otro registro.";
                 $tipoAlerta = 'danger';
             } else {
                 try {
+                    // Registrar nuevo delito en el catálogo si es administrador
+                    if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] === 'admin') {
+                        $this->model->asegurarDelitoExiste($datos['motivo_delito']);
+                    }
+
                     $resultado = $this->model->actualizar($id, $datos, $registro);
                     if (!empty($resultado['cambios'])) {
                         $this->auditoria('EDITAR_EXPEDIENTE', "Exp: {$datos['n_expediente']}",
@@ -234,6 +246,7 @@ class ExpedienteController extends Controller {
                     }
                     // Recargar datos actualizados
                     $registro = $this->model->obtenerPorId($id);
+                    $delitos = $this->model->obtenerDelitos(); // Recargar delitos
                 } catch (PDOException $e) {
                     $mensaje    = 'Error al actualizar: ' . $e->getMessage();
                     $tipoAlerta = 'danger';
@@ -257,7 +270,7 @@ class ExpedienteController extends Controller {
         $tribActualNombre = $this->model->obtenerNombreTribunal((int)$registro['id_tribunal']);
 
         $this->render('expediente/editar', compact(
-            'registro','tribunales','mensaje','tipoAlerta',
+            'registro','tribunales','delitos','mensaje','tipoAlerta',
             'tipoDante','cedulaDante','tipoDado','cedulaDado','id','tribActualNombre'
         ));
     }

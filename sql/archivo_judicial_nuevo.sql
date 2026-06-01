@@ -130,6 +130,7 @@ CREATE TABLE `sedes_deposito` (
   `direccion` text COLLATE utf8mb4_general_ci,
   `descripcion` text COLLATE utf8mb4_general_ci,
   `activo` tinyint(1) DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0',
   `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_sede`),
   UNIQUE KEY `nombre_sede` (`nombre_sede`),

@@ -66,6 +66,17 @@ class SedeController extends Controller {
             }
         }
 
+        // ELIMINAR (borrado logico)
+        if (isset($_GET['eliminar'])) {
+            $id = (int)$_GET['eliminar'];
+            $sede = $this->model->obtenerPorId($id);
+            if ($sede) {
+                $this->model->eliminar($id);
+                $this->auditoria('ELIMINAR_SEDE', $sede['nombre_sede'], "Sede eliminada (borrado lógico): {$sede['nombre_sede']}");
+                $mensaje = 'Sede eliminada. Los expedientes asociados se conservan.'; $tipoAlerta = 'success';
+            }
+        }
+
         $sedes                = $this->model->obtenerTodas();
         $expedientesPorSede   = $this->model->contarExpedientesPorSede();
         $sedeEditar           = ($accion === 'editar' && $idEditar) ? $this->model->obtenerPorId($idEditar) : null;

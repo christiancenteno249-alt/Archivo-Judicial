@@ -27,7 +27,7 @@
 <body>
 <div class="container">
     <div class="mb-4">
-        <a href="/ubicaciones" class="btn btn-secondary"><i class="bi bi-arrow-left me-2"></i>Volver a Ubicaciones</a>
+        <a href="/ubicaciones" class="btn btn-secondary"><i class="bi bi-arrow-left me-2"></i>Ir a Ubicaciones</a>
         <a href="/" class="btn btn-outline-secondary"><i class="bi bi-house me-2"></i>Menú Principal</a>
     </div>
 
@@ -117,6 +117,15 @@
                                        data-confirm-cancel="No"
                                        title="<?= $s['activo']==1?'Desactivar':'Activar' ?>">
                                         <i class="bi bi-<?= $s['activo']==1?'toggle-off':'toggle-on' ?>"></i>
+                                    </a>
+                                    <a href="/sedes?eliminar=<?= $s['id_sede'] ?>"
+                                       class="btn btn-sm btn-danger"
+                                       data-confirm-message="¿Seguro que deseas eliminar '<?= htmlspecialchars($s['nombre_sede']) ?>'? Los expedientes registrados NO se borrarán."
+                                       data-confirm-title="Eliminar Sede"
+                                       data-confirm-ok="Sí, eliminar"
+                                       data-confirm-cancel="Cancelar"
+                                       title="Eliminar sede">
+                                        <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
                             </td>

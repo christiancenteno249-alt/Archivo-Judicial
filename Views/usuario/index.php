@@ -60,7 +60,16 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Contraseña <?= $accion==='crear'?'*':'(dejar vacío para no cambiar)' ?></label>
-                        <input type="password" class="form-control" name="password" <?= $accion==='crear'?'required':'' ?>>
+                        <input type="password" class="form-control" name="password" id="campo_password"
+                               <?= $accion==='crear'?'required':'' ?>
+                               placeholder="<?= $accion==='crear'?'Ingrese la contraseña':'Dejar vacío para no cambiar' ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Confirmar Contraseña <?= $accion==='crear'?'*':'(requerido si cambia la contraseña)' ?></label>
+                        <input type="password" class="form-control" name="confirm_password" id="campo_confirm"
+                               <?= $accion==='crear'?'required':'' ?>
+                               placeholder="Repita la contraseña">
+                        <div class="invalid-feedback">Las contraseñas no coinciden.</div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Rol *</label>
@@ -122,4 +131,37 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/app-alerts.js"></script>
+<script>
+(function(){
+    const pass    = document.getElementById('campo_password');
+    const confirm = document.getElementById('campo_confirm');
+    if (!pass || !confirm) return;
+
+    function validar() {
+        if (confirm.value === '') {
+            confirm.classList.remove('is-invalid','is-valid');
+            return;
+        }
+        if (pass.value === confirm.value) {
+            confirm.classList.remove('is-invalid'); confirm.classList.add('is-valid');
+        } else {
+            confirm.classList.remove('is-valid'); confirm.classList.add('is-invalid');
+        }
+    }
+
+    pass.addEventListener('input', validar);
+    confirm.addEventListener('input', validar);
+
+    const form = pass.closest('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (pass.value !== '' && pass.value !== confirm.value) {
+                e.preventDefault();
+                confirm.classList.add('is-invalid');
+                confirm.focus();
+            }
+        });
+    }
+})();
+</script>
 </body></html>

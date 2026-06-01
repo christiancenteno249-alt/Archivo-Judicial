@@ -216,6 +216,22 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center g-4 mt-3">
+        <div class="col-md-5">
+            <div class="card card-menu" style="background:linear-gradient(135deg,#0056b3,#007bff);border:none;">
+                <i class="bi bi-list-stars card-dropdown-icon"></i>
+                <h3 class="card-title-action">CATÁLOGO DE DELITOS</h3>
+                <a href="<?= BASE_URL ?>/delitos" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card card-menu" style="background:linear-gradient(135deg,#004085,#0056b3);border:none;">
+                <i class="bi bi-bank card-dropdown-icon"></i>
+                <h3 class="card-title-action">CATÁLOGO DE TRIBUNALES</h3>
+                <a href="<?= BASE_URL ?>/tribunales" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
     <?php endif; ?>
 
     <!-- Gestión de Ubicaciones (todos) -->

@@ -19,7 +19,20 @@ class App {
         'sedes'      => ['SedeController',      'index'],
         'ubicaciones'=> ['UbicacionController', 'index'],
         'respaldo'   => ['RespaldoController',  'index'],
+        'respaldo/descargar'   => ['RespaldoController',  'descargar'],
         'verificar_expediente' => ['ExpedienteController', 'verificar'],
+        'login'      => ['AuthController',      'login'],
+        'salir'      => ['AuthController',      'logout'],
+        'logout'     => ['AuthController',      'logout'],
+        'obtener_ubicacion'    => ['UbicacionController', 'obtener'],
+        'delitos'              => ['DelitoController',    'index'],
+        'delitos/guardar'      => ['DelitoController',    'guardar'],
+        'delitos/editar'       => ['DelitoController',    'editar'],
+        'delitos/eliminar'     => ['DelitoController',    'eliminar'],
+        'tribunales'           => ['TribunalController',  'index'],
+        'tribunales/guardar'   => ['TribunalController',  'guardar'],
+        'tribunales/editar'    => ['TribunalController',  'editar'],
+        'tribunales/eliminar'  => ['TribunalController',  'eliminar'],
     ];
 
     /**

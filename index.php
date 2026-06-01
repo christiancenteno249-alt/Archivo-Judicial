@@ -28,29 +28,7 @@ spl_autoload_register(function (string $clase): void {
     }
 });
 
-// ─── 2. TABLA DE FALLBACK LEGACY ─────────────────────────────────────────────
-// Si la ruta MVC no existe, estos archivos legacy se sirven directamente.
-// Esto garantiza que el sistema nunca deje de funcionar.
-$fallbackLegacy = [
-    'respaldo'          => 'respaldar_bd.php',
-    'respaldar_bd.php'  => 'respaldar_bd.php',
-    'ubicaciones'       => 'gestionar_ubicaciones.php',
-    'gestionar_ubicaciones.php' => 'gestionar_ubicaciones.php',
-    'sedes'             => 'gestionar_sedes.php',
-    'gestionar_sedes.php' => 'gestionar_sedes.php',
-    'usuarios'          => 'gestionar_usuarios.php',
-    'gestionar_usuarios.php' => 'gestionar_usuarios.php',
-    'auditoria'         => 'auditoria.php',
-    'auditoria.php'     => 'auditoria.php',
-    'login'             => 'login.php',
-    'login.php'         => 'login.php',
-    'salir'             => 'logout.php',
-    'logout.php'        => 'logout.php',
-    'obtener_ubicacion' => 'obtener_ubicacion.php',
-    'obtener_ubicacion.php' => 'obtener_ubicacion.php',
-    'leer_tablas'       => 'leer_tablas.php',
-    'leer_tablas.php'   => 'leer_tablas.php',
-];
+// ─── 2. TABLA DE FALLBACK LEGACY REMOVIDA (SISTEMA 100% MVC) ──────────────────
 
 // ─── 3. PARSEAR URI ──────────────────────────────────────────────────────────
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -70,14 +48,6 @@ try {
     $app = new App();
     $app->run();
 } catch (Throwable $e) {
-    // Si el MVC falla (controlador no encontrado = ruta legacy), intentar fallback
-    $segmento = explode('/', $uri)[0] ?? '';
-
-    if (isset($fallbackLegacy[$segmento])) {
-        require __DIR__ . '/' . $fallbackLegacy[$segmento];
-        exit;
-    }
-
     if ($e->getCode() === 404) {
         http_response_code(404);
         echo "<h1>404 - Página no encontrada</h1><a href='" . BASE_URL . "/'>Volver al inicio</a>";

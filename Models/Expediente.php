@@ -312,6 +312,29 @@ class Expediente {
     }
 
     /**
+     * Obtiene la lista de delitos del catálogo.
+     */
+    public function obtenerDelitos(): array {
+        $stmt = $this->db->query("SELECT id_delito, nombre_delito FROM delitos ORDER BY nombre_delito ASC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Inserta un delito en la base de datos si no existe en el catálogo.
+     */
+    public function asegurarDelitoExiste(string $nombreDelito): void {
+        $nombreDelito = mb_strtoupper(trim($nombreDelito), 'UTF-8');
+        if (empty($nombreDelito)) return;
+
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM delitos WHERE nombre_delito = :nombre");
+        $stmt->execute([':nombre' => $nombreDelito]);
+        if ((int)$stmt->fetchColumn() === 0) {
+            $stmtInsert = $this->db->prepare("INSERT INTO delitos (nombre_delito) VALUES (:nombre)");
+            $stmtInsert->execute([':nombre' => $nombreDelito]);
+        }
+    }
+
+    /**
      * Verifica si un numero de expediente ya existe en otro registro (para edicion).
      */
     public function existeExpedienteOtroId(string $nExpediente, int $idExcluir): bool {

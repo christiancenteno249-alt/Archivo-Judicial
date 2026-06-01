@@ -129,8 +129,13 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-8">
                                 <label for="motivo_delito" class="form-label">Motivo / Delito <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="motivo_delito" name="motivo_delito" placeholder="Descripción del motivo o delito" required>
-                                <div class="invalid-feedback">Ingresa la descripción del motivo o delito.</div>
+                                <select class="form-select" id="motivo_delito" name="motivo_delito" required>
+                                    <option value="" disabled selected>Escribe o selecciona el motivo o delito...</option>
+                                    <?php foreach($delitos as $d): ?>
+                                    <option value="<?= htmlspecialchars($d['nombre_delito']) ?>"><?= htmlspecialchars($d['nombre_delito']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <div class="invalid-feedback">Selecciona o ingresa la descripción del motivo o delito.</div>
                             </div>
                             <div class="col-md-4">
                                 <label for="n_legajo" class="form-label">Nro Legajo <span class="text-danger">*</span></label>
@@ -225,6 +230,30 @@
 let confirmadoActualizar = false;
 $(document).ready(function() {
     $('#busqueda-tribunales').select2({theme:'bootstrap-5',width:'100%',placeholder:'Escribe el nombre del tribunal...',allowClear:true,language:{noResults:()=>'No se encontraron resultados',searching:()=>'Buscando...'}});
+
+    const esAdmin = <?= json_encode($_SESSION['usuario_rol'] === 'admin') ?>;
+    $('#motivo_delito').select2({
+        theme: 'bootstrap-5',
+        width: '100%',
+        placeholder: 'Escribe o selecciona el motivo o delito...',
+        allowClear: true,
+        tags: esAdmin,
+        language: {
+            noResults: () => esAdmin ? 'Escribe para agregar un nuevo delito...' : 'No se encontraron resultados',
+            searching: () => 'Buscando...'
+        },
+        createTag: function (params) {
+            var term = $.trim(params.term);
+            if (term === '') {
+                return null;
+            }
+            return {
+                id: term.toUpperCase(),
+                text: term.toUpperCase() + ' (NUEVO MOTIVO/DELITO)',
+                newTag: true
+            }
+        }
+    });
 
     // Forzar mayúsculas en el valor real de los inputs
     $('input[type="text"], textarea').on('input', function() {

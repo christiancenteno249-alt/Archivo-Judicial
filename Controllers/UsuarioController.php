@@ -26,11 +26,15 @@ class UsuarioController extends Controller {
             $nombre  = trim($_POST['nombre'] ?? '');
             $usuario = trim($_POST['usuario'] ?? '');
             $pass    = trim($_POST['password'] ?? '');
+            $confirm = trim($_POST['confirm_password'] ?? '');
             $rol     = trim($_POST['rol'] ?? 'operador');
 
-            if (empty($nombre) || empty($usuario) || empty($pass)) {
+            if (empty($nombre) || empty($usuario) || empty($pass) || empty($confirm)) {
                 $mensaje = 'Todos los campos son obligatorios.';
                 $tipoAlerta = 'warning';
+            } elseif ($pass !== $confirm) {
+                $mensaje = 'Las contraseñas no coinciden. Por favor verifique.';
+                $tipoAlerta = 'danger';
             } elseif ($this->model->existeNick($usuario)) {
                 $mensaje = 'El nombre de usuario ya existe.';
                 $tipoAlerta = 'danger';
@@ -47,10 +51,13 @@ class UsuarioController extends Controller {
             $nombre  = trim($_POST['nombre'] ?? '');
             $usuario = trim($_POST['usuario'] ?? '');
             $pass    = trim($_POST['password'] ?? '');
+            $confirm = trim($_POST['confirm_password'] ?? '');
             $rol     = trim($_POST['rol'] ?? 'operador');
 
             if (empty($nombre) || empty($usuario)) {
                 $mensaje = 'Nombre y usuario son obligatorios.'; $tipoAlerta = 'warning';
+            } elseif (!empty($pass) && $pass !== $confirm) {
+                $mensaje = 'Las contraseñas no coinciden. Por favor verifique.'; $tipoAlerta = 'danger';
             } else {
                 $this->model->actualizar($id, ['nombre' => $nombre, 'usuario' => $usuario, 'password' => $pass, 'rol' => $rol]);
                 $this->auditoria('EDITAR_USUARIO', $usuario, "Usuario actualizado: {$nombre}");
