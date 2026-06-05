@@ -104,6 +104,14 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Apellido Demandante -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label for="apellidos_demandante" class="form-label">Apellido(s) Demandante <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="apellidos_demandante" name="apellidos_demandante" value="<?= htmlspecialchars($registro['apellidos_demandante'] ?? '') ?>" placeholder="Apellido(s) del demandante" required>
+                                <div class="invalid-feedback">Ingresa los apellidos del demandante.</div>
+                            </div>
+                        </div>
                         <!-- Demandado -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-8">
@@ -121,6 +129,14 @@
                                     <input type="text" class="form-control" id="cedula_rif_demandado" name="cedula_rif_demandado" value="<?= htmlspecialchars($cedulaDado) ?>" placeholder="Ej: 12345678" required>
                                     <div class="invalid-feedback">Ingresa la Cédula/RIF.</div>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- Apellido Demandado -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label for="apellidos_demandado" class="form-label">Apellido(s) Demandado <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="apellidos_demandado" name="apellidos_demandado" value="<?= htmlspecialchars($registro['apellidos_demandado'] ?? '') ?>" placeholder="Apellido(s) del demandado" required>
+                                <div class="invalid-feedback">Ingresa los apellidos del demandado.</div>
                             </div>
                         </div>
                         <!-- Motivo y Legajo -->

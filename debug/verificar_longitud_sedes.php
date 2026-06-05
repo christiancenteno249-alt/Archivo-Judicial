@@ -178,7 +178,7 @@ if ($_SESSION['usuario_rol'] !== 'admin') {
             <h5 class="mb-3">3. Prueba de Guardado</h5>
             <p>Para probar que los nombres largos se guardan correctamente:</p>
             <ol>
-                <li>Ve a <a href="gestionar_sedes.php" target="_blank">Gestionar Sedes</a></li>
+                <li>Ve a <a href="gestionar_sedes.php"">Gestionar Sedes</a></li>
                 <li>Edita una sede existente</li>
                 <li>Cambia el nombre a uno muy largo (ej: "JUZGADO DE PRIMERA INSTANCIA EN LO CIVIL, MERCANTIL, TRANSITO Y BANCARIO DE LA CIRCUNSCRIPCION JUDICIAL DEL ESTADO ARAGUA - DEPOSITO CENTRAL DE EXPEDIENTES HISTORICOS Y ACTIVOS")</li>
                 <li>Guarda los cambios</li>

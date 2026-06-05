@@ -13,12 +13,12 @@
     <style>
         @media print {
             @page{size:letter;margin:0;}
-            body{background-color:#fff!important;background-image:none!important;font-size:14px;margin:0;padding:0;}
+            body{background-color:#fff!important;background-image:none!important;font-size:12px;margin:0;padding:0;}
             .no-print, .d-print-none{display:none!important;}
-            .print-container{max-width:100%!important;width:100%!important;margin:0!important;padding:1.5cm!important;box-shadow:none!important;border:none!important;box-sizing:border-box;}
-            .section-title{background-color:#1a237e!important;color:#fff!important;margin-top:15px;margin-bottom:10px;padding:8px 15px;}
-            .print-label{color:#1a237e!important;margin-bottom:2px;}
-            .print-value{background-color:#f8f9fa!important;border-left:3px solid #1a237e!important;margin-bottom:10px;padding:6px 10px;min-height:30px;}
+            .print-container{max-width:100%!important;width:100%!important;margin:0!important;padding:1cm!important;box-shadow:none!important;border:none!important;box-sizing:border-box;}
+            .section-title{background-color:#1a237e!important;color:#fff!important;margin-top:10px;margin-bottom:5px;padding:4px 10px;font-size:1rem;}
+            .print-label{color:#1a237e!important;margin-bottom:0px;font-size:0.75rem;}
+            .print-value{background-color:#f8f9fa!important;border-left:3px solid #1a237e!important;margin-bottom:6px;padding:4px 8px;min-height:22px;font-size:0.9rem;}
             *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
         }
         body{background-color:#f8f9fa;padding:20px;}
@@ -55,12 +55,18 @@
 
     <div class="section-title">Partes Involucradas</div>
     <div class="row">
-        <div class="col-8"><span class="print-label">Demandante</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandante'],'UTF-8')) ?></div></div>
-        <div class="col-4"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($expediente['cedula_rif_demandante']) ?></div></div>
+        <div class="<?= !empty($expediente['apellidos_demandante']) ? 'col-5' : 'col-8' ?>"><span class="print-label">Demandante</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandante'],'UTF-8')) ?></div></div>
+        <?php if(!empty($expediente['apellidos_demandante'])): ?>
+        <div class="col-4"><span class="print-label">Apellido(s)</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['apellidos_demandante'],'UTF-8')) ?></div></div>
+        <?php endif; ?>
+        <div class="<?= !empty($expediente['apellidos_demandante']) ? 'col-3' : 'col-4' ?>"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($expediente['cedula_rif_demandante']) ?></div></div>
     </div>
     <div class="row">
-        <div class="col-8"><span class="print-label">Demandado</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandado'],'UTF-8')) ?></div></div>
-        <div class="col-4"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($expediente['cedula_rif_demandado']) ?></div></div>
+        <div class="<?= !empty($expediente['apellidos_demandado']) ? 'col-5' : 'col-8' ?>"><span class="print-label">Demandado</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandado'],'UTF-8')) ?></div></div>
+        <?php if(!empty($expediente['apellidos_demandado'])): ?>
+        <div class="col-4"><span class="print-label">Apellido(s)</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($expediente['apellidos_demandado'],'UTF-8')) ?></div></div>
+        <?php endif; ?>
+        <div class="<?= !empty($expediente['apellidos_demandado']) ? 'col-3' : 'col-4' ?>"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($expediente['cedula_rif_demandado']) ?></div></div>
     </div>
 
     <div class="section-title">Detalles del Caso</div>

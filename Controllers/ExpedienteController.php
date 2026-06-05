@@ -58,7 +58,9 @@ class ExpedienteController extends Controller {
 
         $filtrosDefault = [
             'expediente' => '', 'n_legajo' => '', 'demandante' => '',
+            'apellidos_demandante' => '',
             'tipo_dante' => 'V', 'ced_dante' => '', 'demandado' => '',
+            'apellidos_demandado' => '',
             'tipo_dado'  => 'V', 'ced_dado'  => '', 'fecha' => '',
             'fecha_desde'=> '', 'fecha_hasta'=> '',
         ];
@@ -177,8 +179,10 @@ class ExpedienteController extends Controller {
                     'fecha_entrada'         => (strtotime($reg['fecha_entrada']) !== false && strpos($reg['fecha_entrada'], '-') !== false) ? date('d/m/Y', strtotime($reg['fecha_entrada'])) : $reg['fecha_entrada'],
                     'tribunal'              => 'Trib. ' . $reg['id_tribunal'] . ' - ' . $reg['nombre_tribunal'],
                     'demandante'            => $reg['demandante'],
+                    'apellidos_demandante'  => $reg['apellidos_demandante'] ?? '',
                     'cedula_rif_demandante' => $reg['cedula_rif_demandante'],
                     'demandado'             => $reg['demandado'],
+                    'apellidos_demandado'   => $reg['apellidos_demandado'] ?? '',
                     'cedula_rif_demandado'  => $reg['cedula_rif_demandado'],
                     'motivo_delito'         => $reg['motivo_delito'],
                     'n_legajo'              => $reg['n_legajo'],
@@ -219,7 +223,9 @@ class ExpedienteController extends Controller {
 
             if (empty($datos['n_expediente']) || empty($datos['fecha_entrada']) ||
                 empty($datos['id_tribunal'])  || empty($datos['demandante'])    ||
-                empty($datos['demandado'])    || empty($datos['motivo_delito']) ||
+                empty($datos['apellidos_demandante']) ||
+                empty($datos['demandado'])    || empty($datos['apellidos_demandado']) ||
+                empty($datos['motivo_delito']) ||
                 empty($datos['n_legajo'])) {
                 $mensaje    = 'Por favor completa todos los campos obligatorios.';
                 $tipoAlerta = 'warning';
@@ -328,9 +334,11 @@ class ExpedienteController extends Controller {
             'fecha_entrada'         => trim($_POST['fecha_entrada'] ?? ''),
             'id_tribunal'           => trim($_POST['id_tribunal'] ?? ''),
             'demandante'            => mb_strtoupper(trim($_POST['demandante'] ?? ''), 'UTF-8'),
+            'apellidos_demandante'  => mb_strtoupper(trim($_POST['apellidos_demandante'] ?? ''), 'UTF-8'),
             'tipo_doc_demandante'   => $tipoDante,
             'cedula_rif_demandante' => $numDante ? $tipoDante . '-' . $numDante : '',
             'demandado'             => mb_strtoupper(trim($_POST['demandado'] ?? ''), 'UTF-8'),
+            'apellidos_demandado'   => mb_strtoupper(trim($_POST['apellidos_demandado'] ?? ''), 'UTF-8'),
             'tipo_doc_demandado'    => $tipoDado,
             'cedula_rif_demandado'  => $numDado  ? $tipoDado  . '-' . $numDado  : '',
             'motivo_delito'         => mb_strtoupper(trim($_POST['motivo_delito'] ?? ''), 'UTF-8'),
@@ -343,10 +351,12 @@ class ExpedienteController extends Controller {
     private function validarCampos(array $datos): string {
         if (empty($datos['n_expediente']) || empty($datos['fecha_entrada']) ||
             empty($datos['id_tribunal'])  || empty($datos['demandante'])    ||
-            empty($datos['demandado'])    || empty($datos['motivo_delito']) ||
+            empty($datos['apellidos_demandante']) ||
+            empty($datos['demandado'])    || empty($datos['apellidos_demandado']) ||
+            empty($datos['motivo_delito']) ||
             empty($datos['n_legajo'])     || empty($datos['cedula_rif_demandante']) ||
             empty($datos['cedula_rif_demandado'])) {
-            return 'Por favor completa todos los campos obligatorios (incluyendo Cédulas/RIF).';
+            return 'Por favor completa todos los campos obligatorios (incluyendo apellidos y Cédulas/RIF).';
         }
 
         foreach ([

@@ -41,6 +41,10 @@ class Expediente {
             $condiciones[] = "m.demandante LIKE :demandante";
             $params[':demandante'] = '%' . $filtros['demandante'] . '%';
         }
+        if (!empty($filtros['apellidos_demandante'])) {
+            $condiciones[] = "m.apellidos_demandante LIKE :apellidos_demandante";
+            $params[':apellidos_demandante'] = '%' . $filtros['apellidos_demandante'] . '%';
+        }
         if (!empty($filtros['ced_dante'])) {
             $tipo = $filtros['tipo_dante'] ?? 'V';
             $condiciones[] = "m.cedula_rif_demandante LIKE :ced_dante";
@@ -49,6 +53,10 @@ class Expediente {
         if (!empty($filtros['demandado'])) {
             $condiciones[] = "m.demandado LIKE :demandado";
             $params[':demandado'] = '%' . $filtros['demandado'] . '%';
+        }
+        if (!empty($filtros['apellidos_demandado'])) {
+            $condiciones[] = "m.apellidos_demandado LIKE :apellidos_demandado";
+            $params[':apellidos_demandado'] = '%' . $filtros['apellidos_demandado'] . '%';
         }
         if (!empty($filtros['ced_dado'])) {
             $tipo = $filtros['tipo_dado'] ?? 'V';
@@ -157,18 +165,20 @@ class Expediente {
             if (!$existente) {
                 // CREAR nuevo expediente
                 $stmt = $this->db->prepare(
-                    "INSERT INTO maestro (n_expediente, fecha_entrada, id_tribunal, demandante,
-                     cedula_rif_demandante, demandado, cedula_rif_demandado, motivo_delito, n_legajo, observaciones)
-                     VALUES (:n_expediente, :fecha_entrada, :id_tribunal, :demandante,
-                     :cedula_rif_demandante, :demandado, :cedula_rif_demandado, :motivo_delito, :n_legajo, :observaciones)"
+                    "INSERT INTO maestro (n_expediente, fecha_entrada, id_tribunal, demandante, apellidos_demandante,
+                     cedula_rif_demandante, demandado, apellidos_demandado, cedula_rif_demandado, motivo_delito, n_legajo, observaciones)
+                     VALUES (:n_expediente, :fecha_entrada, :id_tribunal, :demandante, :apellidos_demandante,
+                     :cedula_rif_demandante, :demandado, :apellidos_demandado, :cedula_rif_demandado, :motivo_delito, :n_legajo, :observaciones)"
                 );
                 $stmt->execute([
                     ':n_expediente'          => $datos['n_expediente'],
                     ':fecha_entrada'         => $datos['fecha_entrada'],
                     ':id_tribunal'           => $datos['id_tribunal'],
                     ':demandante'            => $datos['demandante'],
+                    ':apellidos_demandante'  => $datos['apellidos_demandante'],
                     ':cedula_rif_demandante' => $datos['cedula_rif_demandante'],
                     ':demandado'             => $datos['demandado'],
+                    ':apellidos_demandado'   => $datos['apellidos_demandado'],
                     ':cedula_rif_demandado'  => $datos['cedula_rif_demandado'],
                     ':motivo_delito'         => $datos['motivo_delito'],
                     ':n_legajo'              => $datos['n_legajo'],
@@ -177,12 +187,12 @@ class Expediente {
                 $esNuevo = true;
             } else {
                 // ACTUALIZAR expediente existente — detectar cambios
-                $campos = ['id_tribunal','fecha_entrada','demandante','cedula_rif_demandante',
-                           'demandado','cedula_rif_demandado','motivo_delito','n_legajo','observaciones'];
+                $campos = ['id_tribunal','fecha_entrada','demandante','apellidos_demandante','cedula_rif_demandante',
+                           'demandado','apellidos_demandado','cedula_rif_demandado','motivo_delito','n_legajo','observaciones'];
                 $nombres = [
                     'id_tribunal' => 'Tribunal', 'fecha_entrada' => 'Fecha de Entrada',
-                    'demandante'  => 'Demandante', 'cedula_rif_demandante' => 'CI/RIF Demandante',
-                    'demandado'   => 'Demandado',  'cedula_rif_demandado'  => 'CI/RIF Demandado',
+                    'demandante'  => 'Demandante', 'apellidos_demandante' => 'Apellidos Demandante', 'cedula_rif_demandante' => 'CI/RIF Demandante',
+                    'demandado'   => 'Demandado', 'apellidos_demandado' => 'Apellidos Demandado', 'cedula_rif_demandado'  => 'CI/RIF Demandado',
                     'motivo_delito' => 'Motivo/Delito', 'n_legajo' => 'Nro Legajo',
                     'observaciones' => 'Observaciones',
                 ];
@@ -200,8 +210,8 @@ class Expediente {
 
                 $stmt = $this->db->prepare(
                     "UPDATE maestro SET id_tribunal=:id_tribunal, fecha_entrada=:fecha_entrada,
-                     demandante=:demandante, cedula_rif_demandante=:cedula_rif_demandante,
-                     demandado=:demandado, cedula_rif_demandado=:cedula_rif_demandado,
+                     demandante=:demandante, apellidos_demandante=:apellidos_demandante, cedula_rif_demandante=:cedula_rif_demandante,
+                     demandado=:demandado, apellidos_demandado=:apellidos_demandado, cedula_rif_demandado=:cedula_rif_demandado,
                      motivo_delito=:motivo_delito, n_legajo=:n_legajo, observaciones=:observaciones
                      WHERE n_expediente=:n_expediente"
                 );
@@ -209,8 +219,10 @@ class Expediente {
                     ':id_tribunal'           => $datos['id_tribunal'],
                     ':fecha_entrada'         => $datos['fecha_entrada'],
                     ':demandante'            => $datos['demandante'],
+                    ':apellidos_demandante'  => $datos['apellidos_demandante'],
                     ':cedula_rif_demandante' => $datos['cedula_rif_demandante'],
                     ':demandado'             => $datos['demandado'],
+                    ':apellidos_demandado'   => $datos['apellidos_demandado'],
                     ':cedula_rif_demandado'  => $datos['cedula_rif_demandado'],
                     ':motivo_delito'         => $datos['motivo_delito'],
                     ':n_legajo'              => $datos['n_legajo'],
@@ -256,12 +268,12 @@ class Expediente {
      * @return array ['cambios' => [], 'filasAfectadas' => int]
      */
     public function actualizar(int $id, array $datos, array $registroAnterior): array {
-        $campos = ['n_expediente','id_tribunal','fecha_entrada','demandante','cedula_rif_demandante',
-                   'demandado','cedula_rif_demandado','motivo_delito','n_legajo','observaciones'];
+        $campos = ['n_expediente','id_tribunal','fecha_entrada','demandante','apellidos_demandante','cedula_rif_demandante',
+                   'demandado','apellidos_demandado','cedula_rif_demandado','motivo_delito','n_legajo','observaciones'];
         $nombres = [
             'n_expediente' => 'Nro Expediente', 'id_tribunal' => 'Tribunal',
-            'fecha_entrada'=> 'Fecha de Entrada', 'demandante' => 'Demandante',
-            'cedula_rif_demandante' => 'CI/RIF Demandante', 'demandado' => 'Demandado',
+            'fecha_entrada'=> 'Fecha de Entrada', 'demandante' => 'Demandante', 'apellidos_demandante' => 'Apellidos Demandante',
+            'cedula_rif_demandante' => 'CI/RIF Demandante', 'demandado' => 'Demandado', 'apellidos_demandado' => 'Apellidos Demandado',
             'cedula_rif_demandado'  => 'CI/RIF Demandado',  'motivo_delito' => 'Motivo/Delito',
             'n_legajo' => 'Nro Legajo', 'observaciones' => 'Observaciones',
         ];
@@ -280,8 +292,8 @@ class Expediente {
 
         $stmt = $this->db->prepare(
             "UPDATE maestro SET n_expediente=:n_expediente, id_tribunal=:id_tribunal,
-             fecha_entrada=:fecha_entrada, demandante=:demandante,
-             cedula_rif_demandante=:cedula_rif_demandante, demandado=:demandado,
+             fecha_entrada=:fecha_entrada, demandante=:demandante, apellidos_demandante=:apellidos_demandante,
+             cedula_rif_demandante=:cedula_rif_demandante, demandado=:demandado, apellidos_demandado=:apellidos_demandado,
              cedula_rif_demandado=:cedula_rif_demandado, motivo_delito=:motivo_delito,
              n_legajo=:n_legajo, observaciones=:observaciones
              WHERE Id = :id LIMIT 1"
@@ -291,8 +303,10 @@ class Expediente {
             ':id_tribunal'           => $datos['id_tribunal'],
             ':fecha_entrada'         => $datos['fecha_entrada'],
             ':demandante'            => $datos['demandante'],
+            ':apellidos_demandante'  => $datos['apellidos_demandante'],
             ':cedula_rif_demandante' => $datos['cedula_rif_demandante'],
             ':demandado'             => $datos['demandado'],
+            ':apellidos_demandado'   => $datos['apellidos_demandado'],
             ':cedula_rif_demandado'  => $datos['cedula_rif_demandado'],
             ':motivo_delito'         => $datos['motivo_delito'],
             ':n_legajo'              => $datos['n_legajo'],

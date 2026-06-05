@@ -66,7 +66,9 @@ function renderPaginaBtn(int $pag, string $label, bool $dis = false, bool $act =
                     <div class="col-md-3"><label class="form-label">Nro Legajo</label>
                         <input type="text" class="form-control" name="n_legajo" placeholder="Ej: L-001" value="<?= htmlspecialchars($filtros['n_legajo']) ?>"></div>
                     <div class="col-md-6"><label class="form-label">Demandante</label>
-                        <input type="text" class="form-control" name="demandante" placeholder="Nombre completo" value="<?= htmlspecialchars($filtros['demandante']) ?>"></div>
+                        <input type="text" class="form-control" name="demandante" placeholder="Nombre(s)" value="<?= htmlspecialchars($filtros['demandante']) ?>"></div>
+                    <div class="col-md-3"><label class="form-label">Apellido(s) Demandante</label>
+                        <input type="text" class="form-control" name="apellidos_demandante" placeholder="Apellido(s)" value="<?= htmlspecialchars($filtros['apellidos_demandante'] ?? '') ?>"></div>
                     <div class="col-md-4"><label class="form-label">C.I. / RIF Demandante</label>
                         <div class="input-group">
                             <select class="form-select" name="tipo_dante" style="max-width:75px;font-weight:bold;">
@@ -75,7 +77,9 @@ function renderPaginaBtn(int $pag, string $label, bool $dis = false, bool $act =
                             <input type="text" class="form-control" name="ced_dante" placeholder="Numero..." value="<?= htmlspecialchars($filtros['ced_dante']) ?>">
                         </div></div>
                     <div class="col-md-5"><label class="form-label">Demandado</label>
-                        <input type="text" class="form-control" name="demandado" placeholder="Nombre completo" value="<?= htmlspecialchars($filtros['demandado']) ?>"></div>
+                        <input type="text" class="form-control" name="demandado" placeholder="Nombre(s)" value="<?= htmlspecialchars($filtros['demandado']) ?>"></div>
+                    <div class="col-md-3"><label class="form-label">Apellido(s) Demandado</label>
+                        <input type="text" class="form-control" name="apellidos_demandado" placeholder="Apellido(s)" value="<?= htmlspecialchars($filtros['apellidos_demandado'] ?? '') ?>"></div>
                     <div class="col-md-4"><label class="form-label">C.I. / RIF Demandado</label>
                         <div class="input-group">
                             <select class="form-select" name="tipo_dado" style="max-width:75px;font-weight:bold;">
@@ -156,7 +160,7 @@ function renderPaginaBtn(int $pag, string $label, bool $dis = false, bool $act =
                         <div class="btn-group" role="group">
                             <a href="/expediente/<?= urlencode($f['Id']) ?>?search=<?= urlencode($filtros['expediente']) ?>" class="btn btn-sm btn-primary" title="Ver historial"><i class="bi bi-clock-history me-1"></i>Ver más</a>
                             <a href="/editar/<?= urlencode($f['Id']) ?>" class="btn btn-sm btn-warning text-white" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                            <a href="/imprimir/<?= urlencode($f['Id']) ?>" class="btn btn-sm btn-success" title="Imprimir" target="_blank"><i class="bi bi-printer-fill"></i></a>
+                            <a href="/imprimir/<?= urlencode($f['Id']) ?>" class="btn btn-sm btn-success" title="Imprimir"><i class="bi bi-printer-fill"></i></a>
                         </div>
                     </td>
                 </tr>

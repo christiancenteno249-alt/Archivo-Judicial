@@ -37,7 +37,7 @@
             <?php endif; ?>
         </div>
         <div>
-            <a href="/imprimir/<?= urlencode($id) ?>" class="btn btn-success" target="_blank"><i class="bi bi-printer-fill me-2"></i>Imprimir Expediente</a>
+            <a href="/imprimir/<?= urlencode($id) ?>" class="btn btn-success""><i class="bi bi-printer-fill me-2"></i>Imprimir Expediente</a>
         </div>
     </div>
 
@@ -62,12 +62,20 @@
                 <div class="col-md-6">
                     <div class="info-label">Demandante</div>
                     <div class="info-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandante'],'UTF-8')) ?></div>
-                    <?php if(!empty($expediente['cedula_rif_demandante'])): ?><small class="text-muted"><i class="bi bi-person-vcard me-1"></i><?= htmlspecialchars($expediente['cedula_rif_demandante']) ?></small><?php endif; ?>
+                    <?php if(!empty($expediente['apellidos_demandante'])): ?>
+                    <div class="info-label mt-2">Apellido(s) Demandante</div>
+                    <div class="info-value"><?= htmlspecialchars(mb_strtoupper($expediente['apellidos_demandante'],'UTF-8')) ?></div>
+                    <?php endif; ?>
+                    <?php if(!empty($expediente['cedula_rif_demandante'])): ?><small class="text-muted d-block mt-2"><i class="bi bi-person-vcard me-1"></i><?= htmlspecialchars($expediente['cedula_rif_demandante']) ?></small><?php endif; ?>
                 </div>
                 <div class="col-md-6">
                     <div class="info-label">Demandado</div>
                     <div class="info-value"><?= htmlspecialchars(mb_strtoupper($expediente['demandado'],'UTF-8')) ?></div>
-                    <?php if(!empty($expediente['cedula_rif_demandado'])): ?><small class="text-muted"><i class="bi bi-person-vcard me-1"></i><?= htmlspecialchars($expediente['cedula_rif_demandado']) ?></small><?php endif; ?>
+                    <?php if(!empty($expediente['apellidos_demandado'])): ?>
+                    <div class="info-label mt-2">Apellido(s) Demandado</div>
+                    <div class="info-value"><?= htmlspecialchars(mb_strtoupper($expediente['apellidos_demandado'],'UTF-8')) ?></div>
+                    <?php endif; ?>
+                    <?php if(!empty($expediente['cedula_rif_demandado'])): ?><small class="text-muted d-block mt-2"><i class="bi bi-person-vcard me-1"></i><?= htmlspecialchars($expediente['cedula_rif_demandado']) ?></small><?php endif; ?>
                 </div>
             </div>
             <div class="row mt-3">

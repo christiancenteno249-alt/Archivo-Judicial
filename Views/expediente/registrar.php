@@ -26,13 +26,13 @@
         .form-label{font-weight:600;color:#4a4a4a;}
         @media print{
             @page{size:letter;margin:0;}
-            body{background-color:#fff!important;background-image:none!important;font-size:14px;margin:0;padding:0;}
+            body{background-color:#fff!important;background-image:none!important;font-size:12px;margin:0;padding:0;}
             .d-print-none{display:none!important;}
             .d-print-block{display:block!important;}
-            .print-container{max-width:100%!important;width:100%!important;margin:0!important;padding:1.5cm!important;box-shadow:none!important;border:none!important;box-sizing:border-box;}
-            .section-title{background-color:#1a237e!important;color:#fff!important;margin-top:15px;margin-bottom:10px;padding:8px 15px;}
-            .print-label{color:#1a237e!important;margin-bottom:2px;}
-            .print-value{background-color:#f8f9fa!important;border-left:3px solid #1a237e!important;margin-bottom:10px;padding:6px 10px;min-height:30px;}
+            .print-container{max-width:100%!important;width:100%!important;margin:0!important;padding:1cm!important;box-shadow:none!important;border:none!important;box-sizing:border-box;}
+            .section-title{background-color:#1a237e!important;color:#fff!important;margin-top:10px;margin-bottom:5px;padding:4px 10px;font-size:1rem;}
+            .print-label{color:#1a237e!important;margin-bottom:0px;font-size:0.75rem;}
+            .print-value{background-color:#f8f9fa!important;border-left:3px solid #1a237e!important;margin-bottom:6px;padding:4px 8px;min-height:22px;font-size:0.9rem;}
             *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
         }
         .print-label{font-weight:700;color:#1a237e;font-size:.85rem;text-transform:uppercase;margin-bottom:5px;display:block;}
@@ -93,7 +93,7 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-8">
                                 <label for="demandante" class="form-label">Nombre Demandante <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="demandante" name="demandante" placeholder="Nombre completo del demandante" required>
+                                <input type="text" class="form-control" id="demandante" name="demandante" placeholder="Nombre(s) del demandante" required>
                                 <div class="invalid-feedback">Ingresa el nombre del demandante.</div>
                             </div>
                             <div class="col-md-4">
@@ -107,11 +107,19 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Apellido Demandante -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label for="apellidos_demandante" class="form-label">Apellido(s) Demandante <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="apellidos_demandante" name="apellidos_demandante" placeholder="Apellido(s) del demandante" required>
+                                <div class="invalid-feedback">Ingresa los apellidos del demandante.</div>
+                            </div>
+                        </div>
                         <!-- Demandado -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-8">
                                 <label for="demandado" class="form-label">Nombre Demandado <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="demandado" name="demandado" placeholder="Nombre completo del demandado" required>
+                                <input type="text" class="form-control" id="demandado" name="demandado" placeholder="Nombre(s) del demandado" required>
                                 <div class="invalid-feedback">Ingresa el nombre del demandado.</div>
                             </div>
                             <div class="col-md-4">
@@ -123,6 +131,14 @@
                                     <input type="text" class="form-control" id="cedula_rif_demandado" name="cedula_rif_demandado" placeholder="Ej: 12345678" required>
                                     <div class="invalid-feedback">Ingresa la Cédula/RIF.</div>
                                 </div>
+                            </div>
+                        </div>
+                        <!-- Apellido Demandado -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-12">
+                                <label for="apellidos_demandado" class="form-label">Apellido(s) Demandado <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="apellidos_demandado" name="apellidos_demandado" placeholder="Apellido(s) del demandado" required>
+                                <div class="invalid-feedback">Ingresa los apellidos del demandado.</div>
                             </div>
                         </div>
                         <!-- Motivo y Legajo -->
@@ -201,12 +217,18 @@
 
         <div class="section-title">Partes Involucradas</div>
         <div class="row">
-            <div class="col-8"><span class="print-label">Demandante</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['demandante'],'UTF-8')) ?></div></div>
-            <div class="col-4"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($datosImpresion['cedula_rif_demandante']) ?: 'N/A' ?></div></div>
+            <div class="<?= !empty($datosImpresion['apellidos_demandante']) ? 'col-5' : 'col-8' ?>"><span class="print-label">Demandante</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['demandante'],'UTF-8')) ?></div></div>
+            <?php if(!empty($datosImpresion['apellidos_demandante'])): ?>
+            <div class="col-4"><span class="print-label">Apellido(s)</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['apellidos_demandante'],'UTF-8')) ?></div></div>
+            <?php endif; ?>
+            <div class="<?= !empty($datosImpresion['apellidos_demandante']) ? 'col-3' : 'col-4' ?>"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($datosImpresion['cedula_rif_demandante']) ?: 'N/A' ?></div></div>
         </div>
         <div class="row">
-            <div class="col-8"><span class="print-label">Demandado</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['demandado'],'UTF-8')) ?></div></div>
-            <div class="col-4"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($datosImpresion['cedula_rif_demandado']) ?: 'N/A' ?></div></div>
+            <div class="<?= !empty($datosImpresion['apellidos_demandado']) ? 'col-5' : 'col-8' ?>"><span class="print-label">Demandado</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['demandado'],'UTF-8')) ?></div></div>
+            <?php if(!empty($datosImpresion['apellidos_demandado'])): ?>
+            <div class="col-4"><span class="print-label">Apellido(s)</span><div class="print-value"><?= htmlspecialchars(mb_strtoupper($datosImpresion['apellidos_demandado'],'UTF-8')) ?></div></div>
+            <?php endif; ?>
+            <div class="<?= !empty($datosImpresion['apellidos_demandado']) ? 'col-3' : 'col-4' ?>"><span class="print-label">C.I. / RIF</span><div class="print-value"><?= htmlspecialchars($datosImpresion['cedula_rif_demandado']) ?: 'N/A' ?></div></div>
         </div>
 
         <div class="section-title">Detalles del Caso</div>
