@@ -60,16 +60,26 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Contraseña <?= $accion==='crear'?'*':'(dejar vacío para no cambiar)' ?></label>
-                        <input type="password" class="form-control" name="password" id="campo_password"
-                               <?= $accion==='crear'?'required':'' ?>
-                               placeholder="<?= $accion==='crear'?'Ingrese la contraseña':'Dejar vacío para no cambiar' ?>">
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="password" id="campo_password"
+                                   <?= $accion==='crear'?'required':'' ?>
+                                   placeholder="<?= $accion==='crear'?'Ingrese la contraseña':'Dejar vacío para no cambiar' ?>">
+                            <button class="btn btn-outline-secondary bg-white" type="button" onclick="togglePassword('campo_password', 'icon_pass')">
+                                <i class="bi bi-eye-fill" id="icon_pass"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Confirmar Contraseña <?= $accion==='crear'?'*':'(requerido si cambia la contraseña)' ?></label>
-                        <input type="password" class="form-control" name="confirm_password" id="campo_confirm"
-                               <?= $accion==='crear'?'required':'' ?>
-                               placeholder="Repita la contraseña">
-                        <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="confirm_password" id="campo_confirm"
+                                   <?= $accion==='crear'?'required':'' ?>
+                                   placeholder="Repita la contraseña">
+                            <button class="btn btn-outline-secondary bg-white" type="button" onclick="togglePassword('campo_confirm', 'icon_confirm')">
+                                <i class="bi bi-eye-fill" id="icon_confirm"></i>
+                            </button>
+                            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Rol *</label>
@@ -163,5 +173,19 @@
         });
     }
 })();
+
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+    }
+}
 </script>
 </body></html>

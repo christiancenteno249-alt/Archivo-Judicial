@@ -189,6 +189,9 @@
                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                     <input type="password" class="form-control" id="input_password" name="password" 
                            placeholder="Ingresa tu contraseña" required autocomplete="current-password">
+                    <button class="btn btn-outline-secondary bg-white border-start-0" type="button" id="btnTogglePassword" style="border-color: #ced4da; color: var(--azul-institucional);">
+                        <i class="bi bi-eye-fill" id="iconPassword"></i>
+                    </button>
                 </div>
             </div>
             
@@ -211,6 +214,21 @@
         input.addEventListener('blur', () => {
             input.parentElement.classList.remove('input-group-focus');
         });
+    });
+
+    // Toggle para ver contraseña
+    document.getElementById('btnTogglePassword').addEventListener('click', function() {
+        const input = document.getElementById('input_password');
+        const icon = document.getElementById('iconPassword');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye-fill');
+            icon.classList.add('bi-eye-slash-fill');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash-fill');
+            icon.classList.add('bi-eye-fill');
+        }
     });
 </script>
 </body>
