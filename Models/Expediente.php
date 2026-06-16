@@ -30,12 +30,12 @@ class Expediente {
         $params = [];
 
         if (!empty($filtros['expediente'])) {
-            $condiciones[] = "m.n_expediente LIKE :expediente";
-            $params[':expediente'] = '%' . $filtros['expediente'] . '%';
+            $condiciones[] = "m.n_expediente = :expediente";
+            $params[':expediente'] = $filtros['expediente'];
         }
         if (!empty($filtros['n_legajo'])) {
-            $condiciones[] = "m.n_legajo LIKE :n_legajo";
-            $params[':n_legajo'] = '%' . $filtros['n_legajo'] . '%';
+            $condiciones[] = "m.n_legajo = :n_legajo";
+            $params[':n_legajo'] = $filtros['n_legajo'];
         }
         if (!empty($filtros['demandante'])) {
             $condiciones[] = "m.demandante LIKE :demandante";
@@ -47,8 +47,8 @@ class Expediente {
         }
         if (!empty($filtros['ced_dante'])) {
             $tipo = $filtros['tipo_dante'] ?? 'V';
-            $condiciones[] = "m.cedula_rif_demandante LIKE :ced_dante";
-            $params[':ced_dante'] = '%' . $tipo . $filtros['ced_dante'] . '%';
+            $condiciones[] = "m.cedula_rif_demandante = :ced_dante";
+            $params[':ced_dante'] = $tipo . '-' . $filtros['ced_dante'];
         }
         if (!empty($filtros['demandado'])) {
             $condiciones[] = "m.demandado LIKE :demandado";
@@ -60,8 +60,8 @@ class Expediente {
         }
         if (!empty($filtros['ced_dado'])) {
             $tipo = $filtros['tipo_dado'] ?? 'V';
-            $condiciones[] = "m.cedula_rif_demandado LIKE :ced_dado";
-            $params[':ced_dado'] = '%' . $tipo . $filtros['ced_dado'] . '%';
+            $condiciones[] = "m.cedula_rif_demandado = :ced_dado";
+            $params[':ced_dado'] = $tipo . '-' . $filtros['ced_dado'];
         }
         if (!empty($filtros['fecha'])) {
             $condiciones[] = "DATE(m.fecha_entrada) = :fecha";

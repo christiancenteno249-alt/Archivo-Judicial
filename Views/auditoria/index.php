@@ -76,11 +76,35 @@
             border-radius: 4px;
         }
         .truncate-detalles {
-            max-width: 250px;
+            max-width: 220px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             display: block;
+        }
+        .btn-ver-detalle {
+            background: none;
+            border: none;
+            padding: 4px 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            color: #1565c0;
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        .btn-ver-detalle:hover {
+            background-color: #e3f2fd;
+            transform: scale(1.15);
+        }
+        .btn-ver-detalle.disabled {
+            color: #b0bec5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        th.col-ojo, td.col-ojo {
+            width: 50px;
+            text-align: center;
         }
     </style>
 </head>
@@ -171,7 +195,8 @@
                             <th>Acción</th>
                             <th>Recurso</th>
                             <th>IP</th>
-                            <th class="pe-4">Detalles</th>
+                            <th>Detalles</th>
+                            <th class="col-ojo pe-3"><i class="bi bi-eye text-white opacity-75"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,36 +231,29 @@
                                 </td>
                                 <td><code><?= htmlspecialchars($log['recurso'] ?? '') ?></code></td>
                                 <td><span class="ip-badge"><?= htmlspecialchars($log['ip_maquina'] ?? '') ?></span></td>
-                                <td class="pe-4">
+                                <td>
                                     <?php if (!empty($log['detalles'])): ?>
-                                        <?php if (strlen($log['detalles']) > 100): ?>
-                                            <small class="text-muted truncate-detalles"><?= htmlspecialchars(substr($log['detalles'], 0, 100)) ?>...</small>
-                                            <button class="btn btn-sm btn-link p-0 fw-bold text-decoration-none" type="button" data-bs-toggle="modal" data-bs-target="#detalleModal<?= $log['id_log'] ?>">
-                                                Ver más
-                                            </button>
-                                            
-                                            <!-- Modal para detalles completos -->
-                                            <div class="modal fade" id="detalleModal<?= $log['id_log'] ?>" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content text-start">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title text-primary"><i class="bi bi-info-circle-fill me-2"></i>Detalles Completos</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body bg-light">
-                                                            <pre style="white-space: pre-wrap; font-size: 0.88rem; font-family: monospace;" class="p-3 bg-white border rounded"><?= htmlspecialchars($log['detalles']) ?></pre>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php else: ?>
-                                            <small class="text-muted truncate-detalles"><?= htmlspecialchars($log['detalles']) ?></small>
-                                        <?php endif; ?>
+                                        <small class="text-muted truncate-detalles"><?= htmlspecialchars(substr($log['detalles'], 0, 80)) ?><?= strlen($log['detalles']) > 80 ? '...' : '' ?></small>
                                     <?php else: ?>
-                                        <small class="text-muted">Sin detalles</small>
+                                        <small class="text-muted fst-italic">Sin detalles</small>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="col-ojo pe-3">
+                                    <?php if (!empty($log['detalles'])): ?>
+                                        <button
+                                            class="btn-ver-detalle"
+                                            title="Ver detalles completos"
+                                            data-detalles="<?= htmlspecialchars($log['detalles'], ENT_QUOTES) ?>"
+                                            data-fecha="<?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($log['fecha_hora']))) ?>"
+                                            data-accion="<?= htmlspecialchars($log['accion'], ENT_QUOTES) ?>"
+                                            onclick="abrirDetalleModal(this)"
+                                        >
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn-ver-detalle disabled" title="Sin detalles disponibles" disabled>
+                                            <i class="bi bi-eye"></i>
+                                        </button>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -285,6 +303,44 @@
 
 </div>
 
+<!-- Modal único reutilizable para detalles de auditoría -->
+<div class="modal fade" id="detalleModalGlobal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content text-start">
+            <div class="modal-header" style="background: linear-gradient(135deg, #004085, #0056b3);">
+                <div>
+                    <h5 class="modal-title text-white mb-0" id="detalleModalLabel">
+                        <i class="bi bi-eye-fill me-2"></i>Detalles del Registro
+                    </h5>
+                    <small class="text-white opacity-75" id="modalSubtitulo"></small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body bg-light p-3">
+                <pre id="modalContenido" style="white-space: pre-wrap; font-size: 0.88rem; font-family: monospace; margin: 0;" class="p-3 bg-white border rounded"></pre>
+            </div>
+            <div class="modal-footer border-0 bg-white">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function abrirDetalleModal(btn) {
+    const detalles = btn.getAttribute('data-detalles');
+    const fecha    = btn.getAttribute('data-fecha');
+    const accion   = btn.getAttribute('data-accion');
+
+    document.getElementById('modalContenido').textContent  = detalles;
+    document.getElementById('modalSubtitulo').textContent  = accion + '  —  ' + fecha;
+
+    const modal = new bootstrap.Modal(document.getElementById('detalleModalGlobal'));
+    modal.show();
+}
+</script>
 </body>
 </html>

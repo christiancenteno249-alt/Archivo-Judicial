@@ -57,7 +57,7 @@ function renderPaginaBtn(int $pag, string $label, bool $dis = false, bool $act =
     <div class="card card-search mb-4">
         <a href="/" class="btn btn-secondary btn-sm btn-volver-menu"><i class="bi bi-arrow-left me-2"></i>Volver al Menú</a>
         <div class="card-body p-4">
-            <form action="/consulta" method="POST" id="searchForm">
+            <form action="/consulta" method="POST" id="searchForm" autocomplete="off">
                 <!-- Boton oculto para que el Enter ejecute la busqueda en lugar de limpiar -->
                 <button type="submit" name="ejecutar" class="d-none" aria-hidden="true"></button>
                 <div class="row g-3">
