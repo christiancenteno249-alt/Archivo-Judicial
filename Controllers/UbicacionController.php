@@ -76,7 +76,7 @@ class UbicacionController extends Controller {
 
         // 2. GUARDAR UBICACION INDIVIDUAL
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_ubicacion_individual'])) {
-            $this->requireAdmin();
+            $this->requireAuth();
 
             $id_expediente = trim($_POST['id_expediente'] ?? '');
             $n_expediente = trim($_POST['n_expediente'] ?? '');
@@ -132,7 +132,7 @@ class UbicacionController extends Controller {
 
         // 3. GUARDAR UBICACION LOTE
         if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['guardar_ubicacion_lote'])) {
-            $this->requireAdmin();
+            $this->requireAuth();
 
             $expedientes_ids = $_POST['expedientes_seleccionados'] ?? [];
             $id_sede = trim($_POST['id_sede_lote'] ?? '');
